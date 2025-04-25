@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Добавление нового клиента{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-4">Добавление нового клиента</h2>
+
+    <form method="POST" action="{{ url_for('add_client') }}">
+        <div class="mb-3">
+            <label for="name" class="form-label">ФИО клиента*</label>
+            <input type="text" class="form-control" id="name" name="name"
+                   placeholder="Иванов Иван Иванович" required>
+            <div class="form-text">Обязательное поле</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="phone" class="form-label">Телефон*</label>
+            <input type="tel" class="form-control" id="phone" name="phone"
+                   placeholder="+7 (999) 123-45-67" pattern="\+?[0-9\s\-\(\)]+" required>
+            <div class="form-text">Формат: +7 (XXX) XXX-XX-XX</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email*</label>
+            <input type="email" class="form-control" id="email" name="email"
+                   placeholder="example@domain.com" required>
+            <div class="form-text">Формат: user@example.com</div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-person-plus"></i> Добавить клиента
+            </button>
+            <a href="{{ url_for('clients_list') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-x-circle"></i> Отмена
+            </a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .form-text {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
