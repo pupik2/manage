@@ -7,7 +7,12 @@ class Client(db.Model):
     name = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(100), nullable=False)
-    
+    passport_series = db.Column(db.String(10))
+    passport_number = db.Column(db.String(20))
+    passport_issued_by = db.Column(db.String(200))
+    passport_issue_date = db.Column(db.Date)
+    passport_image = db.Column(db.String(100))  # Путь к скану паспорта
+    profile_image = db.Column(db.String(100))   # Путь к фото профиля
     tours = db.relationship('Tour', backref='client', lazy=True)
 
 class Route(db.Model):

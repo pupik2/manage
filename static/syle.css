@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+.current-photo {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+.img-thumbnail {
+    max-width: 100%;
+    height: auto;
+}

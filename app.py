@@ -1,11 +1,22 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from models import db, Client, Tour, Route
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tours.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'your-secret-key-here'
+# Конфигурация загрузки файлов
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['CLIENT_PASSPORT_FOLDER'] = 'passports'
+app.config['CLIENT_PHOTOS_FOLDER'] = 'profile_photos'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'pdf'}
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB
+
+# Создаем папки для загрузок
+os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], app.config['CLIENT_PASSPORT_FOLDER']), exist_ok=True)
+os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], app.config['CLIENT_PHOTOS_FOLDER']), exist_ok=True)
 
 db.init_app(app)
 
@@ -39,15 +50,47 @@ def add_client():
         return redirect(url_for('clients_list'))
     
     return render_template('clients/add.html')
-
 @app.route('/clients/edit/<int:id>', methods=['GET', 'POST'])
 def edit_client(id):
     client = Client.query.get_or_404(id)
     
     if request.method == 'POST':
+        # Основные данные
         client.name = request.form['name']
         client.phone = request.form['phone']
-        client.email = request.form['email']
+        client.email = request.form.get('email', '')
+        
+        # Паспортные данные
+        client.passport_series = request.form.get('passport_series')
+        client.passport_number = request.form.get('passport_number')
+        client.passport_issued_by = request.form.get('passport_issued_by')
+        
+        if request.form.get('passport_issue_date'):
+            client.passport_issue_date = datetime.strptime(
+                request.form['passport_issue_date'], '%Y-%m-%d').date()
+        
+        # Обработка файлов
+        if 'passport_image' in request.files:
+            file = request.files['passport_image']
+            if file.filename != '' and allowed_file(file.filename):
+                filename = secure_filename(f"passport_{client.id}_{datetime.now().timestamp()}.{file.filename.rsplit('.', 1)[1].lower()}")
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], app.config['CLIENT_PASSPORT_FOLDER'], filename))
+                client.passport_image = os.path.join(app.config['CLIENT_PASSPORT_FOLDER'], filename)
+        
+        if 'profile_image' in request.files:
+            file = request.files['profile_image']
+            if file.filename != '' and allowed_file(file.filename):
+                filename = secure_filename(f"profile_{client.id}_{datetime.now().timestamp()}.{file.filename.rsplit('.', 1)[1].lower()}")
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], app.config['CLIENT_PHOTOS_FOLDER'], filename))
+                client.profile_image = os.path.join(app.config['CLIENT_PHOTOS_FOLDER'], filename)
+        
+        if request.form.get('remove_profile_image'):
+            if client.profile_image:
+                try:
+                    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], client.profile_image))
+                except:
+                    pass
+                client.profile_image = None
         
         db.session.commit()
         flash('Данные клиента обновлены', 'success')

@@ -19,6 +19,20 @@
     <tbody>
         {% for client in clients %}
         <tr>
+            <td>
+                {% if client.profile_image %}
+                <img src="{{ url_for('static', filename='uploads/' + client.profile_image) }}"
+                     class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                {% endif %}
+                {{ client.name }}
+            </td>
+            <td>
+                {% if client.passport_series %}
+                Паспорт: {{ client.passport_series }} {{ client.passport_number }}
+                {% else %}
+                <span class="text-muted">Нет данных</span>
+                {% endif %}
+            </td>
             <td>{{ client.id }}</td>
             <td>{{ client.name }}</td>
             <td>{{ client.phone }}</td>
