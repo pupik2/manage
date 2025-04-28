@@ -112,7 +112,7 @@ def edit_client(id):
                         
                         # Сохраняем новый файл
                         ext = file.filename.rsplit('.', 1)[1].lower()
-                        filename = secure_filename(f"profile_{client.id}_{int(datetime.now().timestamp())}.{ext}")
+                        filename = secure_filename(f"profile_{client.id}")
                         save_path = os.path.join(app.config['UPLOAD_FOLDER'], app.config['CLIENT_PHOTOS_FOLDER'], filename)
                         file.save(save_path)
                         client.profile_image = os.path.join(app.config['CLIENT_PHOTOS_FOLDER'], filename)

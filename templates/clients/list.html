@@ -21,8 +21,17 @@
         <tr>
             <td>
                 {% if client.profile_image %}
-                <img src="{{ url_for('static', filename='uploads/' + client.profile_image) }}"
-                     class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                {% set image_path = 'uploads/' + client.profile_image %}
+                <img src="{{ url_for('static', filename=image_path) }}"
+                     alt="Фото профиля"
+                     class="img-thumbnail"
+                     style="max-width: 200px;"
+                     onerror="this.style.display='none'">
+                {% else %}
+                <div class="no-photo-placeholder bg-light d-flex align-items-center justify-content-center"
+                     style="width: 200px; height: 200px;">
+                    Нет фото
+                </div>
                 {% endif %}
                 {{ client.name }}
             </td>
