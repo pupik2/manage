@@ -3,9 +3,15 @@
 {% block content %}
 <div class="container">
     <h2>Редактирование клиента</h2>
-
     <form method="POST" enctype="multipart/form-data">
         <!-- Основные данные -->
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email*</label>
+            <input type="email" class="form-control" name="email" value="{{ client.email }}" required>
+            <div class="form-text">Формат: user@example.com</div>
+        </div>
+
         <div class="row mb-3">
             <div class="col-md-6">
                 <label class="form-label">ФИО*</label>
@@ -52,6 +58,24 @@
             </div>
         </div>
 
+        <tr>
+            <td>
+                {% if client.profile_image %}
+                {% set image_path = 'uploads/passports/' + client.passport_image %}
+                <img src="{{ url_for('static', filename=image_path) }}"
+                     alt="Фото паспорта"
+                     class="img-thumbnail"
+                     style="max-width: 800px;"
+                     onerror="this.style.display='none'">
+                {% else %}
+                <div class="no-photo-placeholder bg-light d-flex align-items-center justify-content-center"
+                     style="width: 200px; height: 200px;">
+                    Нет фото
+                </div>
+                {% endif %}
+            </td>
+        </tr>
+
         <!-- Фото профиля -->
         <div class="mb-4">
             <label class="form-label">Фото профиля</label>
@@ -73,4 +97,5 @@
         <a href="{{ url_for('clients_list') }}" class="btn btn-secondary">Отмена</a>
     </form>
 </div>
-{% endblock %}
+
+    {% endblock %}

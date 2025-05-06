@@ -36,7 +36,6 @@
     <Content Include="requirements.txt" />
     <Content Include="static\syle.css" />
     <Content Include="static\uploads\passports\passport_1_1745841595.jpg" />
-    <Content Include="static\uploads\profile_photos\profile_1_1745841595.jpg" />
     <Content Include="templates\base.html" />
     <Content Include="templates\clients\add.html" />
     <Content Include="templates\clients\list.html" />

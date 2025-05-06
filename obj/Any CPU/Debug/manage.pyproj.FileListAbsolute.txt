@@ -1,1 +1,2 @@
 C:\Users\Student\source\repos\manage\obj\Any CPU\Debug\manage.pyproj.CoreCompileInputs.cache
+C:\Users\Student\Source\Repos\pupik2\manage\obj\Any CPU\Debug\manage.pyproj.CoreCompileInputs.cache

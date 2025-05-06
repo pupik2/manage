@@ -94,7 +94,7 @@ def edit_client(id):
                         filename = secure_filename(f"passport_{client.id}_{int(datetime.now().timestamp())}.{ext}")
                         save_path = os.path.join(app.config['UPLOAD_FOLDER'], app.config['CLIENT_PASSPORT_FOLDER'], filename)
                         file.save(save_path)
-                        client.passport_image = os.path.join(app.config['CLIENT_PASSPORT_FOLDER'], filename)
+                        client.passport_image = filename
             
             # Обработка фото профиля
             if 'profile_image' in request.files:
@@ -115,7 +115,7 @@ def edit_client(id):
                         filename = secure_filename(f"profile_{client.id}")
                         save_path = os.path.join(app.config['UPLOAD_FOLDER'], app.config['CLIENT_PHOTOS_FOLDER'], filename)
                         file.save(save_path)
-                        client.profile_image = os.path.join(app.config['CLIENT_PHOTOS_FOLDER'], filename)
+                        client.profile_image = filename
             
             # Удаление фото профиля
             if request.form.get('remove_profile_image'):

@@ -21,7 +21,7 @@
         <tr>
             <td>
                 {% if client.profile_image %}
-                {% set image_path = 'uploads/' + client.profile_image %}
+                {% set image_path = 'uploads/profile_photos/' + client.profile_image %}
                 <img src="{{ url_for('static', filename=image_path) }}"
                      alt="Фото профиля"
                      class="img-thumbnail"
